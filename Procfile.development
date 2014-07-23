@@ -1,0 +1,2 @@
+web: bundle exec rerun server.rb
+worker: bundle exec rerun -- bundle exec sidekiq --verbose -c 2 -r ./server.rb
