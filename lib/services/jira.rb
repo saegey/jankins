@@ -54,11 +54,11 @@ module Jira
     private
 
     def self.connection
-      conn = Faraday.new(url: 'https://jira.hasoffers.com') do |faraday|
+      conn = Faraday.new(url: ENV['JIRA_URL']) do |faraday|
         # faraday.response :logger
         faraday.adapter  Faraday.default_adapter
       end
-      conn.basic_auth(ENV['JENKINS_USERNAME'], ENV['JENKINS_PASSWORD'])
+      conn.basic_auth(ENV['JIRA_USERNAME'], ENV['JIRA_PASSWORD'])
       conn
     end
   end
