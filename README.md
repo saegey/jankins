@@ -17,30 +17,11 @@ Uses [Github Webhooks](https://developer.github.com/webhooks/creating/) to trigg
 
 **BOLD** – Implemented
 
-## Getting Started
 
-### Development
-- `bundle install`
-- create .env file in root directory with required env variables
-- `foreman start -f Procfile.development`
+## Prerequisite
+Create .env file in root directory with required env variables
 
-### Monitoring Sidekiq
-- `rake monitor_sidekiq`
-- Open browser to http://hostname:9494
-
-
-### Deploying
-Requires Ruby 2.1.2
-
-- create .env file in root directory with required env variables
-
-#### Supervisord
-Information about [Foreman](http://ddollar.github.io/foreman/) export: [http://ddollar.github.io/foreman/#EXPORT-FORMATS](http://ddollar.github.io/foreman/#EXPORT-FORMATS)
-
-Example export:
-`foreman export supervisord -t /path/to/supervisord/confs -l /path/to/put/logs`
-
-## Sample .env
+#### Sample .env
 
 ```
 export JENKINS_USERNAME=username
@@ -57,3 +38,24 @@ export JIRA_URL=https://jira.url
 export JIRA_USERNAME=username
 export JIRA_PASSWORD=password
 ```
+
+## Development
+- `bundle install`
+- `foreman start -f Procfile.development`
+
+## Monitoring Sidekiq
+- `rake monitor_sidekiq`
+- Open browser to http://hostname:9494
+
+## Deploying
+
+### Dependencies:
+- Ruby 2.1.2
+- Redis 2.8.10
+
+### Supervisord
+Information about [Foreman](http://ddollar.github.io/foreman/) export: [http://ddollar.github.io/foreman/#EXPORT-FORMATS](http://ddollar.github.io/foreman/#EXPORT-FORMATS)
+
+Example export:
+`foreman export supervisord -t /path/to/supervisord/confs -l /path/to/put/logs`
+
