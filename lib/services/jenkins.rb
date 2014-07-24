@@ -23,8 +23,6 @@ module Jenkins
     end
 
     def self.output(id, job_name)
-      errors = []
-      status = ""
       instance = self.new(job_name)
       instance.id = id
       console_output = instance.client.job.get_console_output(
