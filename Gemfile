@@ -13,4 +13,8 @@ gem 'recursive-open-struct'
 # queuing
 gem 'sidekiq'
 
+# procfile
+gem 'foreman'
+
 gem 'rerun', group: :development
+
