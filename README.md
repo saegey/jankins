@@ -2,7 +2,7 @@ Jankins
 =======
 
 ## Overview
-Uses [Github Webhooks](https://developer.github.com/webhooks/creating/) to trigger [Jenkins](http://jenkins-ci.org/) builds automagically when a Pull Request is created/synchronized for a repository.
+Uses [Github Webhooks](https://developer.github.com/webhooks/creating/) to trigger [Jenkins](http://jenkins-ci.org/) builds automagically when a Pull Request is created/synchronized for a repository. Also, keeps the JIRAS, Githubs and Jenkins ["on the same page"](http://conferencecall.biz/).
 
 ### Chain of Events:
 
@@ -43,15 +43,19 @@ export JIRA_PASSWORD=password
 - `bundle install`
 - `foreman start -f Procfile.development`
 
-## Monitoring Sidekiq
+## Monitoring [Sidekiq](http://sidekiq.org/)
 - `rake monitor_sidekiq`
 - Open browser to http://hostname:9494
 
 ## Deploying
 
 ### Dependencies:
-- Ruby 2.1.2
+- Ruby 2.1.2 (could possibly use older version if needed)
 - Redis 2.8.10
+
+### Tasks for each deployment
+- `bundle install`
+
 
 ### Supervisord
 Information about [Foreman](http://ddollar.github.io/foreman/) export: [http://ddollar.github.io/foreman/#EXPORT-FORMATS](http://ddollar.github.io/foreman/#EXPORT-FORMATS)
@@ -59,3 +63,12 @@ Information about [Foreman](http://ddollar.github.io/foreman/) export: [http://d
 Example export:
 `foreman export supervisord -t /path/to/supervisord/confs -l /path/to/put/logs`
 
+
+## Colophon
+- [https://github.com/sinatra/sinatra/](https://github.com/sinatra/sinatra/)
+- [https://github.com/arangamani/jenkins_api_client](https://github.com/arangamani/jenkins_api_client)
+- [https://github.com/lostisland/faraday](https://github.com/lostisland/faraday)
+- [https://github.com/octokit/octokit.rb](https://github.com/octokit/octokit.rb)
+- [https://github.com/mperham/sidekiq](https://github.com/mperham/sidekiq)
+- [https://github.com/aetherknight/recursive-open-struct](https://github.com/aetherknight/recursive-open-struct)
+- [https://github.com/ddollar/foreman](https://github.com/ddollar/foreman)
