@@ -1,11 +1,9 @@
 require 'bundler'
-require 'pp'
+# Dir["./lib/services/*.rb"].each { |file| require file }
 
-Dir["./lib/services/*.rb"].each { |file| require file }
+# Bundler.require
 
-Bundler.require
-
-task :monitor do
+task :monitor_sidekiq do
   # optional: Process.daemon (and take care of Process.pid to kill process later on)
   require 'sidekiq/web'
   app = Sidekiq::Web
