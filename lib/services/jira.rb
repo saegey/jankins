@@ -16,7 +16,7 @@ module Jira
       )
       instance.links = JSON.parse(response.body)
       instance.id = id
-      return instance
+      instance
     end
 
     def create

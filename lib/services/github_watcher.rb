@@ -5,7 +5,7 @@ module GithubWatcher
       if res && res.respond_to?('action') && res.respond_to?('pull_request')
         jira_id = search_jira_id(res.pull_request.title)
         if res.pull_request.state == 'open'
-          queue_build(res.pull_request, build_job, jira_id)
+          queue_build(res.pull_request, jenkins_build_job, jira_id)
           Jira::IssueLinkWorker.perform_async(
             jira_id,
             res.pull_request.html_url,
@@ -21,7 +21,7 @@ module GithubWatcher
     private
 
     def self.search_jira_id(message)
-      match = /API-\d*/.match(message)
+      match = /#{jira_project_prefix}-\d*/.match(message)
       match ? match.to_s : false
     end
 
@@ -29,15 +29,19 @@ module GithubWatcher
       Jenkins::BuildWorker.perform_async(
         pull_request.head.repo.owner.login,
         pull_request.head.ref,
-        'MAT_API_Github_Integration_Test',
+        build_job,
         jira_id,
         pull_request.head.repo.full_name,
         pull_request.number
       )
     end
 
-    def self.build_job
+    def self.jenkins_build_job
       ENV['JENKINS_JOB']
+    end
+
+    def self.jira_project_prefix
+      ENV['JIRA_PROJECT_PREFIX']
     end
   end
 end

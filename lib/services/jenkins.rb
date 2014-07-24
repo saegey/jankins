@@ -16,7 +16,7 @@ module Jenkins
 
     def self.trigger(fork, branch, job_name)
       instance = self.new(job_name)
-      opts = { 'build_start_timeout' => 1800 }
+      opts = { build_start_timeout: ENV['JENKINS_BUILD_START_TIMEOUT'] }
       job_params = { fork: fork, branch: branch }
       instance.id = instance.client.job.build(job_name, job_params, opts)
       instance
@@ -61,7 +61,7 @@ module Jenkins
 
     def perform(fork, branch, job_name, jira_id, repo_name, issue_id)
       build = Jenkins::Build.trigger(fork, branch, job_name)
-      jenkins_output_wait_secs = 60
+      jenkins_output_wait_secs = ENV['JENKINS_BUILD_WAIT_TIME']
       Jenkins::BuildOutputWorker.perform_in(
         jenkins_output_wait_secs, build.id, job_name, repo_name, issue_id
       )
