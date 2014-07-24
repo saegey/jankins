@@ -15,7 +15,7 @@ Uses [Github Webhooks](https://developer.github.com/webhooks/creating/) to trigg
     - **CREATE/UPDATE JIRA LINK** – Link to console output of triggered Jenkins job
     - CREATE/UPDATE CODE REVIEW – Phabricator code review with Arc Diff
 
-***BOLD** – Implemented
+**BOLD** – Implemented
 
 ## Getting Started
 
