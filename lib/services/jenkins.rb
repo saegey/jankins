@@ -16,7 +16,7 @@ module Jenkins
 
     def self.trigger(fork, branch, job_name)
       instance = self.new(job_name)
-      opts = { build_start_timeout: ENV['JENKINS_BUILD_START_TIMEOUT'] }
+      opts = { 'build_start_timeout' => 1800 }
       job_params = { fork: fork, branch: branch }
       instance.id = instance.client.job.build(job_name, job_params, opts)
       instance
@@ -63,7 +63,11 @@ module Jenkins
       build = Jenkins::Build.trigger(fork, branch, job_name)
       jenkins_output_wait_secs = ENV['JENKINS_BUILD_WAIT_TIME']
       Jenkins::BuildOutputWorker.perform_in(
-        jenkins_output_wait_secs, build.id, job_name, repo_name, issue_id
+        jenkins_output_wait_secs,
+        build.id, job_name,
+        repo_name,
+        issue_id,
+        jira_id
       )
       Jira::IssueLinkWorker.perform_async(
         jira_id, build.url, 'Jenkins', 'Jenkins'
@@ -74,10 +78,14 @@ module Jenkins
   class BuildOutputWorker
     include Sidekiq::Worker
 
-    def perform(build_id, build_job, repo_name, issue_id)
+    def perform(build_id, build_job, repo_name, issue_id, jira_id)
       build = Jenkins::Build.output(build_id, build_job)
-      comment = Github::IssueComment.new(repo_name, issue_id)
-      comment.jenkins_message(build.status, build.url, build.errors)
+      Github::IssueCommentWorker.perform_async(
+        repo_name, issue_id, build.status, build.url, build.errors
+      )
+      Jira::IssueLinkWorker.perform_async(
+        jira_id, build.url, "Jenkins – #{build.status}", 'Jenkins'
+      )
     end
   end
 end

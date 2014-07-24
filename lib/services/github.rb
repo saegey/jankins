@@ -1,3 +1,5 @@
+Bundler.require
+
 module Github
   class IssueComment
     attr_accessor :repo, :issue_number, :message
@@ -31,6 +33,16 @@ module Github
         login: ENV['GITHUB_USERNAME'],
         password: ENV['GITHUB_PASSWORD']
       )
+    end
+  end
+
+  class IssueCommentWorker
+    include Sidekiq::Worker
+
+    def perform(repo_name, issue_id, build_status, build_url, build_errors)
+      comment = Github::IssueComment.new(repo_name, issue_id)
+      comment.jenkins_message(build_status, build_url, build_errors)
+      comment.save
     end
   end
 end

@@ -70,7 +70,7 @@ module Jira
       issue = Jira::Issue.find(id)
       found_issue = false
 
-      if issue.links.empty? == false
+      if issue.links.empty? == false && search_phrase
         issue.links.each do |l|
           if /#{search_phrase}/.match(l['object']['title'])
             issue.link = l

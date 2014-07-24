@@ -14,7 +14,7 @@ module GithubWatcher
           )
         end
       else
-        return 'no pull request'
+        'no pull request'
       end
     end
 
