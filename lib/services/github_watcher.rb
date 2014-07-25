@@ -6,12 +6,14 @@ module GithubWatcher
         jira_id = search_jira_id(res.pull_request.title)
         if res.pull_request.state == 'open'
           queue_build(res.pull_request, jenkins_build_job, jira_id)
-          Jira::IssueLinkWorker.perform_async(
-            jira_id,
-            res.pull_request.html_url,
-            'Pull Request',
-            'Pull Request'
-          )
+          if jira_id
+            Jira::IssueLinkWorker.perform_async(
+              jira_id,
+              res.pull_request.html_url,
+              'Pull Request',
+              'Pull Request'
+            )
+          end
         end
       else
         'no pull request'

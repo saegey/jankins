@@ -67,9 +67,11 @@ module Jenkins
         issue_id,
         jira_id
       )
-      Jira::IssueLinkWorker.perform_async(
-        jira_id, build.url, 'Jenkins', 'Jenkins'
-      )
+      if jira_id
+        Jira::IssueLinkWorker.perform_async(
+          jira_id, build.url, 'Jenkins', 'Jenkins'
+        )
+      end
     end
   end
 
@@ -81,9 +83,11 @@ module Jenkins
       Github::IssueCommentWorker.perform_async(
         repo_name, issue_id, build.status, build.url, build.errors
       )
-      Jira::IssueLinkWorker.perform_async(
-        jira_id, build.url, "Jenkins – #{build.status}", 'Jenkins'
-      )
+      if jira_id
+        Jira::IssueLinkWorker.perform_async(
+          jira_id, build.url, "Jenkins – #{build.status}", 'Jenkins'
+        )
+      end
     end
   end
 end
